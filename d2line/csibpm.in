@@ -1,0 +1,92 @@
+physics QGSP_BERT
+
+trace nTrace=50
+
+param -unset BLTrackFile=det8.BLTrackFile
+param -unset nevent=100000
+# start x=0.0 y=0.0 z=533.7 radiusCut=1000.0
+beam ascii nEvents=$nevent filename=$BLTrackFile
+
+beamlossntuple blnt coordinates=c format=rootExtended
+
+particlecolor pi+=1,0,0 mu+=0,1,0 pi-=1,0,0, mu-=0,1,0 proton=0,0,1 e+=1,1,0 e-=1,1,0
+trackcuts keep=mu+,mu-,pi+,pi-,e+,e-,proton kineticEnergyCut=0.0001
+
+virtualdetector det radius=300. color=0,1,0
+
+
+param z0=533.7
+
+
+param dq13_grad=-0.373
+param dq14_grad=0.467
+param dq15_grad=-0.431
+param dqd_scale=1.0
+param scale=25/30
+
+coil default material=Cu
+material Pb A=207.19 Z=82 density=11.35
+material H A=1 Z=1 density=0.00008988
+material C A=12.01 Z=6 density=2.1
+material Ciso A=12.01 Z=6 density=1.8
+material N A=14.01 Z=7 density=0.001251
+material O A=16.00 Z=8 density=0.001429
+material kapton density=1.42 H,0.026362 C,0.691133 N,0.073270 O,0.209235
+material Al A=26.98 Z=13 density=2.70
+#material Al A=26.98 Z=13 density=2700.
+material Fe A=55.845 Z=26 density=7.87
+material Cu A=63.546 Z=29 density=8.96
+
+
+genericquad dq13 fieldLength=431.4463 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq13_grad*$dqd_scale*($scale) \
+ironLength=270 ironRadius=250 kill=1 \
+fringe=0.7078,5.249,-2.457,2.027,-0.8117,0.5792
+
+genericquad dq14 fieldLength=540.1758 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq14_grad*$dqd_scale*($scale) \
+ironLength=400 ironRadius=250 kill=1 \
+fringe=0.6607,4.911,-2.318,2.479,0.2345,-0.4319
+
+genericquad dq15 fieldLength=405.2702 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq15_grad*$dqd_scale*($scale) \
+ironLength=270 ironRadius=250 kill=1 \
+fringe=0.7085,5.194,-2.361,2.295,-1.437,0.9220
+
+place dq13 z=-1370.0
+place dq14 z=-685.0
+place dq15 z=0
+
+
+
+tubs pipe1 innerRadius=50 outerRadius=55 length=200 material=Fe color=1,1,0.5
+tubs pipe2 innerRadius=30 outerRadius=55 length=20 material=Fe color=1,1,0.5
+tubs pipe3 innerRadius=30 outerRadius=35 length=120 material=Fe color=1,1,0.5
+tubs pipe4 innerRadius=16 outerRadius=35 length=25 material=Fe color=1,1,0.5
+tubs col1 innerRadius=8 outerRadius=30 length=50 material=Pb color=1,1,0.5
+tubs col2 innerRadius=6 outerRadius=30 length=50 material=Pb color=1,1,0.5
+
+place pipe1 z=$z0+200/2
+place pipe2 z=$z0+200+20/2
+place pipe3 z=$z0+200+20+120/2
+place pipe4 z=$z0+200+20+120+25/2
+place col2 z=$z0+200+20+120-50/2
+place col1 z=$z0+200+20+120-50-50/2
+
+
+box ch_front height=260 length=15 width=265 material=Fe
+cylinder ch_front_hole outerRadius=35 length=20 material=Fe
+boolean op=subtraction front_wall ch_front ch_front_hole
+place front_wall z=$z0+200+20+15/2.
+
+
+
+place det z=533.7 rename=detini
+
+place det z=$z0 rename=det1
+place det z=$z0+200 rename=det2
+place det z=$z0+200+20 rename=det3
+place det z=$z0+200+20+120-50-50 rename=det4
+place det z=$z0+200+20+120-50 rename=det5
+place det z=$z0+200+20+120 rename=det6
+place det z=$z0+200+20+120+15 rename=det7A
