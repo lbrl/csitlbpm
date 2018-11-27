@@ -1,0 +1,24 @@
+physics QGSP_BERT
+
+param worldMaterial=Vacuum
+
+param -unset nevent=10000000
+param -unset BLTrackFile=neu.BLTrackFile
+beam ascii nEvents=$nevent filename=$BLTrackFile
+# beam root nEvents=$nevent filename=neu.root name=t
+
+# beamlossntuple blnt coordinates=c format=rootExtended
+
+particlecolor pi+=1,0,0 mu+=0,1,0 pi-=1,0,0, mu-=0,1,0 proton=0,0,1 e+=1,1,0 e-=1,1,0
+trackcuts keep=mu+,mu-,pi+,pi-,e+,e-,proton,alpha,neutron kineticEnergyCut=0.00001 maxTime=1e11
+
+
+tubs mylar outerRadius=120 length=.0029 material=MYLAR maxStep=0.001
+place mylar z=10-.0029/2
+
+detector foil radius=120 length=.005 material=CESIUM_IODIDE birks=0.0051 maxStep=0.0005
+place foil z=10.0+0.005/2 rename=foil
+
+# detector brick width=200 height=100 length=5 material=Pb
+# place brick z=100
+
