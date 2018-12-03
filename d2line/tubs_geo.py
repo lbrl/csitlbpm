@@ -32,6 +32,7 @@ def read_tubs():
             continue
         x = {}
         try:
+            x['name'] = lin[9]
             x['rin'] = float( lin[1] )
             x['rout'] = float( lin[2] )
             x['length'] = float( lin[4] )
@@ -50,8 +51,11 @@ def main():
     tubs = read_tubs()
     # print tubs
     for tub in tubs:
-        print """G4VSolid* colVacuum1_solid = new G4Tubs("Collimator_Vacuum1", {rin}, {rout}, {length}, 0., 360.*degree);""".format(
-                rin = tub['rin'], rout = tub['rout'], length=tub['length'] )
+        print """G4VSolid* {name}_solid = new G4Tubs("{name}", {rin}, {rout}, {length}, 0., 360.*degree);""".format(
+                name = tub['name'], rin = tub['rin'], rout = tub['rout'], length=tub['length'] )
+        print """{name}_logic = new G4LogicalVolume({name}_solid, {mat}, "{name}");""".format(
+                name = tub['name'], mat = tub['material'] )
+        print
 
 
 if __name__ == '__main__':
