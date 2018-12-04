@@ -9,6 +9,13 @@ For every pipe three lines are printed:
 * place the logic volume `G4PVPlacement`.
 The script uses beamtest2017B-tubs.tsv table.
 
+Usage:
+```bash
+$ python tubs_geo.py
+$ ./tubs_geo.py
+$ ./tubs_geo.py z0 150.2
+```
+
 
 ## S30400.cc
 
