@@ -49,12 +49,15 @@ def read_tubs():
 
 def main():
     tubs = read_tubs()
+    z0 = 0.
     # print tubs
     for tub in tubs:
         print """G4VSolid* {name}_solid = new G4Tubs("{name}", {rin}, {rout}, {length}, 0., 360.*degree);""".format(
                 name = tub['name'], rin = tub['rin'], rout = tub['rout'], length=tub['length'] )
         print """{name}_logic = new G4LogicalVolume({name}_solid, {mat}, "{name}");""".format(
                 name = tub['name'], mat = tub['material'] )
+        print """new G4PVPlacement(xRot, G4ThreeVector(0,{zcentre},0), {name}_logic, "{name}", world_logic, false, 0, checkOverlaps);""".format(
+                name = tub['name'], zcentre = tub['zcentre']-z0 )
         print
 
 
