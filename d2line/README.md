@@ -8,6 +8,7 @@ For every pipe three lines are printed:
 * `G4VSolid` defininition;
 * `G4LogicalVolume` definition;
 * place the logic volume `G4PVPlacement`.
+
 The script uses beamtest2017B-tubs.tsv table.
 
 Usage:
