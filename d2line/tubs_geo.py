@@ -55,6 +55,9 @@ def main():
             z0 = float( sys.argv[i+1] )
     print 'z0 = {}'.format( z0 )
     raw_input( '\nPress ENTER to continue, please.\n\n' )
+
+    print '\n' + '\033[92m' + '*'*10 + '  PCDetectorConstruction.cc  ' + '*'*10 + '\033[0m'
+    raw_input( '\nPress ENTER to continue, please.\n\n' )
     for tub in tubs:
         print """G4VSolid* {name}_solid = new G4Tubs("{name}", {rin}, {rout}, {length}, 0., 360.*degree);""".format(
                 name = tub['name'], rin = tub['rin'], rout = tub['rout'], length=tub['length'] )
@@ -63,6 +66,11 @@ def main():
         print """new G4PVPlacement(xRot, G4ThreeVector(0,{zcentre},0), {name}_logic, "{name}", world_logic, false, 0, checkOverlaps);""".format(
                 name = tub['name'], zcentre = tub['zcentre']-z0 )
         print
+
+    print '\n' + '\033[92m' + '*'*10 + '  PCDetectorConstruction.hh  ' + '*'*10 + '\033[0m'
+    raw_input( '\nPress ENTER to continue, please.\n\n' )
+    for tub in tubs:
+        print """G4LogicalVolume* {name}_logic;""".format( name = tub['name'] )
 
 
 if __name__ == '__main__':
