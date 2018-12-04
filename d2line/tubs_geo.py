@@ -50,7 +50,11 @@ def read_tubs():
 def main():
     tubs = read_tubs()
     z0 = 0.
-    # print tubs
+    for i, a in enumerate(sys.argv):
+        if a == 'z0':
+            z0 = float( sys.argv[i+1] )
+    print 'z0 = {}'.format( z0 )
+    raw_input( '\nPress ENTER to continue, please.\n\n' )
     for tub in tubs:
         print """G4VSolid* {name}_solid = new G4Tubs("{name}", {rin}, {rout}, {length}, 0., 360.*degree);""".format(
                 name = tub['name'], rin = tub['rin'], rout = tub['rout'], length=tub['length'] )
