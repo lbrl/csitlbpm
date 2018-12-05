@@ -1,0 +1,36 @@
+physics QGSP_BERT
+
+param worldMaterial=AIR
+
+param -unset BLTrackFile=am241.BLTrackFile
+param -unset nevent=100000
+beam ascii nEvents=$nevent filename=$BLTrackFile
+
+beamlossntuple blnt coordinates=c format=rootExtended
+
+particlecolor pi+=1,0,0 mu+=0,1,0 pi-=1,0,0, mu-=0,1,0 proton=0,0,1 e+=1,1,0 e-=1,1,0
+trackcuts keep=mu+,mu-,pi+,pi-,e+,e-,proton,alpha kineticEnergyCut=0.0001
+
+
+param Rwell=10
+param Rout=25
+param Hwell=2
+param Hei=10
+
+tubs case1 outerRadius=$Rwell length=$Hei-$Hwell-.1 material=PLEXIGLASS kill=0
+tubs case2 outerRadius=$Rout innerRadius=$Rwell length=$Hei material=PLEXIGLASS kill=0
+place case1 z=-($Hei-$Hwell)/2.
+place case2 z=-$Hei/2+$Hwell
+
+
+
+# virtualdetector det radius=1000.0 color=0,1,0
+# place det z=10.0 rename=det#
+
+
+tubs mylar outerRadius=120 length=.0029 material=MYLAR maxStep=0.001
+place mylar z=10-.0029/2
+
+detector foil radius=120 length=.005 material=CESIUM_IODIDE birks=0.0051 maxStep=0.0005
+place foil z=10.0+0.005/2 rename=foil
+
