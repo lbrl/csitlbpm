@@ -1,0 +1,89 @@
+physics QGSP_BERT
+
+trace nTrace=50
+
+# param -unset BLTrackFile=det8.BLTrackFile
+param -unset BLTrackFile=det7.BLTrackFile
+param -unset nevent=100000
+# start x=0.0 y=0.0 z=533.7 radiusCut=1000.0
+beam ascii nEvents=$nevent filename=$BLTrackFile
+
+beamlossntuple blnt coordinates=c format=rootExtended
+
+particlecolor pi+=1,0,0 mu+=0,1,0 pi-=1,0,0, mu-=0,1,0 proton=0,0,1 e+=1,1,0 e-=1,1,0
+trackcuts keep=mu+,mu-,pi+,pi-,e+,e-,proton kineticEnergyCut=0.0001
+
+
+
+param z0=533.7
+param zdq15=24024.3
+
+
+param dq13_grad=-0.373
+param dq14_grad=0.467
+param dq15_grad=-0.431
+param dqd_scale=1.0
+param scale=25/30
+
+coil default material=Cu
+material Pb A=207.19 Z=82 density=11.35
+material H A=1 Z=1 density=0.00008988
+material C A=12.01 Z=6 density=2.1
+material Ciso A=12.01 Z=6 density=1.8
+material N A=14.01 Z=7 density=0.001251
+material O A=16.00 Z=8 density=0.001429
+material kapton density=1.42 H,0.026362 C,0.691133 N,0.073270 O,0.209235
+material Al A=26.98 Z=13 density=2.70
+#material Al A=26.98 Z=13 density=2700.
+material Fe A=55.845 Z=26 density=7.87
+material Cu A=63.546 Z=29 density=8.96
+
+
+genericquad dq13 fieldLength=431.4463 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq13_grad*$dqd_scale*($scale) \
+ironLength=270 ironRadius=250 kill=1 \
+fringe=0.7078,5.249,-2.457,2.027,-0.8117,0.5792
+
+genericquad dq14 fieldLength=540.1758 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq14_grad*$dqd_scale*($scale) \
+ironLength=400 ironRadius=250 kill=1 \
+fringe=0.6607,4.911,-2.318,2.479,0.2345,-0.4319
+
+genericquad dq15 fieldLength=405.2702 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq15_grad*$dqd_scale*($scale) \
+ironLength=270 ironRadius=250 kill=1 \
+fringe=0.7085,5.194,-2.361,2.295,-1.437,0.9220
+
+place dq13 z=-1370.0
+place dq14 z=-685.0
+place dq15 z=0
+
+
+tubs shield5 innerRadius=149.8 outerRadius=149.9 length=2445.0 \
+material=Pb color=0,1,1
+place shield5 z=23130-$zdq15
+
+
+virtualdetector det radius=1000. color=0,1,0
+
+place det z=$z0-900 rename=detm900
+place det z=$z0-800 rename=detm800
+place det z=$z0-700 rename=detm700
+place det z=$z0-600 rename=detm600
+place det z=$z0-500 rename=detm500
+place det z=$z0-400 rename=detm400
+place det z=$z0-300 rename=detm300
+place det z=$z0-200 rename=detm200
+place det z=$z0-100 rename=detm100
+place det z=$z0+1 rename=det1
+place det z=$z0+50 rename=det50
+place det z=$z0+100 rename=det100
+place det z=$z0+150 rename=det150
+place det z=$z0+200 rename=det200
+place det z=$z0+250 rename=det250
+place det z=$z0+300 rename=det300
+place det z=$z0+350 rename=det350
+place det z=$z0+400 rename=det400
+place det z=$z0+450 rename=det450
+place det z=$z0+500 rename=det500
+place det z=$z0+550 rename=det550
