@@ -1,0 +1,692 @@
+#
+# new configuration (switch-yard + kicker + septum)
+# beamline momentum = -105 MeV/c
+# updated realistic fringe
+# fringe for dipoles (DB1,2,3) from fieldmap.
+# DSL2 out.
+# DSEP off.
+#
+ g4ui when=4 "/vis/viewer/set/background 1 1 1"
+#param histoFile=mlf_d2_10101401
+param histoFile=test
+#param histoFile=$HIST
+
+#param nevent=100000
+#param nevent=10000
+randomseed now 9876
+
+# configuration
+#   conf == 0 --- original
+#   conf == 1 --- switch yard + kicker + septum
+param conf=1
+
+# scaling factor (base is 30 MeV/c)
+#param scale=-105./30.
+#param scale=-105./30.*1.036
+#param scale=1
+#param scale=28/30
+param scale=25/30
+
+param source_z=20.
+
+param dq1_grad=-0.881
+param dq2_grad=0.692
+param dq3_grad=-0.494
+param dq13_scale=1.00
+
+param db1_by=0.0962
+param db1_angle=-30.
+
+param sc_current=6.5
+
+param dq4_grad=0.686
+param dq5_grad=-0.899
+param dq6_grad=0.620
+
+param db2_by=0.1100
+param db2_angle=-40.
+
+#param dsep_b=0.0125
+#param dsep_b=0.003125
+param dsep_b=0.0
+#param dsep_b=0.0200
+#param dsep_e=0.970
+param dsep_e=0.0
+
+param dsl2_l_pos=120.
+param dsl2_r_pos=120.
+param dsl2_t_pos=120.
+param dsl2_b_pos=120.
+
+param dq7_grad=-0.207
+param dq8_grad=0.349
+param dq9_grad=-0.393
+
+param db3_by=-0.1570
+
+param sy1_by=-0.019
+#param kicker_by=-0.040
+param kicker_by=0.0
+param sy2_by=-0.019
+param ds3_by=-0.061
+
+param dq13_grad=-0.373
+param dq14_grad=0.467
+param dq15_grad=-0.431
+param dqd_scale=1.0
+
+
+param db4_by=-0.1100
+param db4_angle=40.
+
+
+#
+# trace the first 10 events
+trace nTrace=10 
+
+#
+param degrader_length=0.5
+
+#
+# QGSP is the "default" physics use-case for HEP
+#physics QGSP_BERT_HP
+# physics LHEP
+physics QGSP_BERT
+param minStep=0.001
+
+#
+#printfield type=cylinder exit=1 file=field.out \
+#comment=nothing Z0=0 nR=10 dR=2 nZ=3170 dZ=1 
+#
+
+#
+#beam
+#
+#reference particle=mu+ referenceMomentum=30.0 beamZ=0
+
+#
+# the beam is nominally headed in the +Z direction
+#beam gaussian particle=mu+ meanMomentum=28 \
+#nEvents=100000 firstEvent=1 lastEvent=100000 \
+#beamZ=0.0 beamX=6.1 beamY=0.14 sigmaX=8.9 sigmaY=13.7 \
+#sigmaXp=0.5824 sigmaYp=0.6355 sigmaP=1.5 meanT=0.0 sigmaT=0.0
+#beam gaussian particle=mu+ meanMomentum=30 \
+#     nEvents=$nevent firstEvent=1 lastEvent=$nevent \
+#     beamZ=$source_z beamX=7.5 beamY=14.0 sigmaX=0.0 sigmaY=0.0 \
+#     sigmaXp=0.4 sigmaYp=0.4 sigmaP=1.4 meanT=0.0 sigmaT=0.0
+
+#beam rectangular particle=e- meanMomentum=105. \
+#     nEvents=$nevent firstEvent=1 lastEvent=$nevent \
+#     beamZ=$source_z beamX=0. beamY=0. sigmaX=0.0 sigmaY=0.0 \
+#     sigmaXp=-0.1 sigmaYp=-0.1 sigmaP=0. meanT=0.0 sigmaT=0.0
+
+#beam gaussian particle=mu+ meanMomentum=30 \
+#     nEvents=$nevent firstEvent=1 lastEvent=$nevent \
+#     beamZ=$source_z beamX=0. beamY=0. sigmaX=0.0 sigmaY=0.0 \
+#     sigmaXp=0. sigmaYp=0. sigmaP=0. meanT=0.0 sigmaT=0.0
+
+#..Muto-san standard
+#beam gaussian particle=mu+ meanMomentum=30. \
+#     nEvents=$nevent firstEvent=1 lastEvent=$nevent \
+#     sigmaP=-3.0 \
+#     beamZ=0.0 \
+#     beamX=0.0 sigmaX=4./2. sigmaXp=-0.25 \
+#     beamY=0.0 sigmaY=4. sigmaYp=-0.25 \
+#     meanT=0.0 sigmaT=0.01
+#beam ascii filename=g4input_150218.dat
+#beam ascii filename=g4input_150222_2e5.dat
+# beam ascii filename=g4input_150315_1e6_00.dat
+beam ascii filename=myblt.BLTrackFile
+
+
+#beam ascii filename=$BEAM
+
+
+
+#
+#beam gaussian particle=mu- meanMomentum=30 \
+#nEvents=100 firstEvent=1 lastEvent=10000 \
+#beamZ=13000.0 sigmaX=8.9 sigmaY=13.7 \
+#sigmaXp=1.4 sigmaYp=0.1 sigmaP=0.1 meanT=0.0 sigmaT=0.0
+
+#
+#beam gaussian particle=mu- meanMomentum=60 \
+#nEvents=1000 firstEvent=1 \
+#beamZ=0.0 beamX=0.0 beamY=0.0 \
+#sigmaX=0.0 sigmaY=0.0 sigmaXp=0.1 sigmaYp=0.1 sigmaP=0.0 \
+#meanT=0.0 sigmaT=0.0
+
+#beam gaussian particle=proton meanMomentum=3900 \
+#nEvents=100000 firstEvent=1 \
+#beamZ=-100.0*cos(60.0/180.*3.14) beamX=-100.0*sin(60.0/180.*3.14) beamY=0.0 \
+#rotation=Y60.0 \
+#sigmaX=-5.0 sigmaY=-5.0 sigmaXp=0.0 sigmaYp=0.0 sigmaP=0.0 \
+#meanT=0.0 sigmaT=0.0
+
+#
+# Read from a file
+#
+#beam ascii nEvents=$nevent filename="gun_ishida_pip_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_ishida_pip_1k.txt"
+#beam ascii nEvents=$nevent filename="gun_symmetric_mup_28.txt" beamZ=0.0
+#beam ascii nEvents=$nevent filename="gun_michel_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_ele_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_real_pos_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_ele_c_rotation_10M.txt"
+#beam ascii nEvents=$nevent filename="gun_ele_c_rotation_0deg_1M.txt"
+
+#beam ascii nEvents=$nevent filename="gun_sym_ele_105_al_1mm.txt"
+#beam ascii nEvents=$nevent filename="gun_sym_ele_105_al_3mm.txt"
+#beam ascii nEvents=$nevent filename="gun_sym_ele_105_al_5mm.txt"
+#beam ascii nEvents=$nevent filename="gun_sym_ele_105_al_7mm.txt"
+#beam ascii nEvents=$nevent filename="gun_sym_ele_105_al_9mm.txt"
+#beam ascii nEvents=$nevent filename="gun_sym_ele_105_al_11mm.txt"
+
+#beam ascii nEvents=$nevent filename="gun_symmetric_ele_105.txt" \
+#     beamX=0.0 beamY=-50.0 beamZ=150.0
+
+#beam ascii nEvents=$nevent filename="gun_sym_ele_105_region2.txt"
+
+
+
+#
+#
+#
+#trackcuts killSecondaries=1
+#trackcuts keep=mu+
+particlecolor pi+=1,0,0 mu+=0,1,0 pi-=1,0,0, mu-=0,1,0 \
+          proton=0,0,1 e+=1,1,0 e-=1,1,0
+trackcuts keep=mu+,mu-,pi+,pi-,e+,e-,proton kineticEnergyCut=0.0001
+
+#
+# material
+#
+coil default material=Cu
+material Pb A=207.19 Z=82 density=11.35
+material H A=1 Z=1 density=0.00008988
+material C A=12.01 Z=6 density=2.1
+material Ciso A=12.01 Z=6 density=1.8
+material N A=14.01 Z=7 density=0.001251
+material O A=16.00 Z=8 density=0.001429
+material kapton density=1.42 H,0.026362 C,0.691133 N,0.073270 O,0.209235
+material Al A=26.98 Z=13 density=2.70
+#material Al A=26.98 Z=13 density=2700.
+material Fe A=55.845 Z=26 density=7.87
+material Cu A=63.546 Z=29 density=8.96
+
+#
+# production target
+#
+# fixed target
+#tubs target innerRadius=0.0 outerRadius=35.0 length=20 \
+#material=Ciso color=1,1,0.5
+##particlefilter target radius=35.0 length=20 material=Ciso \
+##color=1,1,1 require=(Px*Px+Py*Py+Pz*Pz>0||PDGid!=-211)
+#polycone target_rim innerRadius=53.186,35.0,35.0,53.186 \
+#outerRadius=75.0,75.0,75.0,75.0 z=-20.5,-10.0,10.0,20.5 \
+#initialPhi=0. finalPhi=360. \
+#material=Cu color=1,1,1
+
+# rotation target
+param y_target=150.0
+tubs target innerRadius=132.5 outerRadius=167.5 length=20 \
+material=Ciso color=1,1,0.5
+polycone target_rim innerRadius=132.5,107.0,107.0,132.5 \
+outerRadius=132.5,132.5,132.5,132.5 z=-10.0,-5.25,5.25,10.0 \
+initialPhi=0. finalPhi=360. \
+material=Ciso color=1,1,0.5
+
+#
+# stopper
+#virtualdetector stopper radius=80.0 length=$degrader_length material=Al \
+#color=1,1,1 maxStep=0.01
+#particlefilter stopper radius=80.0 length=$degrader_length material=Al \
+#color=1,1,1 maxStep=0.01 require=(Px*Px+Py*Py+Pz*Pz>0)
+tubs stopper innerRadius=15. outerRadius=35. length=11. \
+material=Al color=1,1,0.5
+
+#
+# Shields
+#
+tubs target_area innerRadius=400.0 outerRadius=410.0 length=1150.0 \
+material=Pb color=invisible kill=1
+
+tubs target_area2 innerRadius=0.0 outerRadius=410.0 length=10.0 \
+material=Pb color=invisible kill=1
+
+tubs shield innerRadius=220.0 outerRadius=1200.0 length=10.0 \
+material=Pb color=0,1,1 kill=1
+
+tubs sc_shield innerRadius=60.0 outerRadius=64.9 length=6000.0 \
+material=Pb color=0,1,1 kill=1
+
+tubs sc_shield_2 innerRadius=106.0 outerRadius=1200.0 length=10.0 \
+material=Pb color=0,1,1 kill=1
+
+tubs shield1 innerRadius=149.8 outerRadius=149.9 length=2334. \
+material=Pb color=0,1,1 kill=1
+
+tubs shield1_2 innerRadius=149.9 outerRadius=1200.0 length=10.0 \
+material=Pb color=0,1,1 kill=1
+
+tubs shield2 innerRadius=149.8 outerRadius=149.9 length=115.4 \
+material=Pb color=0,1,1 kill=1
+
+tubs GVshield1 innerRadius=125.0 outerRadius=151.0 length=109.5 \
+material=Pb color=0,1,1 kill=1
+
+tubs GVshield2 innerRadius=100.0 outerRadius=151.0 length=340 \
+material=Pb color=0,1,1 kill=1
+
+tubs GVshield3 innerRadius=125.0 outerRadius=151.0 length=105 \
+material=Pb color=0,1,1 kill=1
+
+tubs shield3_1 innerRadius=149.8 outerRadius=149.9 length=450.0 \
+material=Pb color=0,1,1 kill=1
+
+tubs shield3_2 innerRadius=149.8 outerRadius=149.9 length=2040. \
+material=Pb color=0,1,1 kill=1
+
+#tubs shield4 innerRadius=149.8 outerRadius=149.9 length=6066.3 \
+#material=Pb color=0,1,1 kill=1
+#tubs shield4_1 innerRadius=149.8 outerRadius=149.9 length=258. \
+#material=Pb color=0,1,1 kill=1
+tubs shield4_1 innerRadius=249.8 outerRadius=249.9 length=258. \
+material=Pb color=0,1,1 kill=1
+
+#tubs shield4_2 innerRadius=149.8 outerRadius=149.9 length=3646. \
+#material=Pb color=0,1,1 kill=1
+#tubs shield4_2 innerRadius=249.8 outerRadius=249.9 length=3646. \
+#material=Pb color=0,1,1 kill=1
+tubs shield4_2 innerRadius=249.8 outerRadius=249.9 length=1521. \
+material=Pb color=0,1,1 kill=1
+
+#tubs shield5 innerRadius=149.8 outerRadius=149.9 length=4514.8
+tubs shield5 innerRadius=149.8 outerRadius=149.9 length=2445.0 \
+material=Pb color=0,1,1
+
+#
+# Foil
+#
+tubs foil1 innerRadius=0. outerRadius=60. length=0.05 \
+material=kapton color=1,0,0
+
+tubs foil2 innerRadius=0. outerRadius=60. length=0.01 \
+material=Al color=1,0,0
+
+#
+# Slits
+#
+box dsl2 height=250. width=250. length=10. \
+material=Fe color=0,1,0
+
+
+#
+# Magnets
+#
+genericquad dq1 fieldLength=323.8462 apertureRadius=125.0 poleTipRadius=125 \
+gradient=$dq1_grad*($scale)*($dq13_scale) ironLength=200 ironRadius=250 kill=1 \
+fringe=0.8609,4.694,-2.580,2.592,-1.767,0.4782
+
+genericquad dq2 fieldLength=506.0370 apertureRadius=200 poleTipRadius=150 \
+gradient=$dq2_grad*($scale)*($dq13_scale) ironLength=400 ironRadius=300 kill=1 \
+fringe=0.5873,5.894,-0.5713,5.784,2.947,-1.054
+
+genericquad dq3 fieldLength=399.6227 apertureRadius=200 poleTipRadius=150 \
+gradient=$dq3_grad*($scale)*($dq13_scale) ironLength=250 ironRadius=300 kill=1 \
+fringe=0.7430,4.791,-2.468,2.407,-1.815,0.6668
+
+param db1_gap=200.
+genericbend db1_edgebox By=0 fieldWidth=300 fieldHeight=200 \
+fieldLength=0 ironWidth=600 ironHeight=500 ironLength=$db1_gap \
+openAperture=1 ironColor=1,1,1 fieldColor=1,1,0 kill=1
+
+fieldmap db1_fringe0 file=db1_fringe0.BLFieldMap current=$db1_by*($scale)
+
+param db1_centerradius=300.9
+idealsectorbend db1 angle=$db1_angle By=$db1_by*($scale) \
+fieldCenterRadius=$db1_centerradius \
+fieldInnerRadius=110.9 fieldOuterRadius=490.9 fieldHeight=200 \
+ironInnerRadius=10.9 ironOuterRadius=690.9 ironHeight=500 \
+ironColor=1,1,1 fieldColor=1,1,0 kill=1
+
+fieldmap db1_fringe1 file=db1_fringe1.BLFieldMap current=$db1_by*($scale)
+
+coil decaysc innerRadius=65.0 outerRadius=106.0 length=6000.0
+solenoid sc coilName=decaysc current=$sc_current*abs($scale) kill=1
+
+genericquad dq4 fieldLength=413.0164 apertureRadius=100.0 poleTipRadius=100 \
+gradient=$dq4_grad*($scale) ironLength=320 ironRadius=200 kill=1 \
+fringe=0.9244,4.848,-2.527,2.328,0.2222,-0.4
+#fringe=0.9244,4.848,-2.527,2.328,0.2222,-0.5564
+# The original fringe setting shows very strange Bx sturucture if the last enge parameter
+# is < -0.5, so the last parameter was modified.
+
+genericquad dq5 fieldLength=386.2413 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq5_grad*($scale) ironLength=270 ironRadius=250 kill=1 \
+fringe=0.6109,5.808,-1.037,4.939,2.315,5.946
+
+genericquad dq6 fieldLength=397.7975 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq6_grad*($scale) ironLength=270 ironRadius=250 kill=1 \
+fringe=0.6587,5.483,-1.656,3.598,-1.514,0.1493
+
+param db2_gap=200.
+fieldmap db2_fringe0 file=db2_fringe0.BLFieldMap current=$db2_by*($scale)
+
+genericbend db2 By=$db2_by*($scale) \
+fieldWidth=600 fieldHeight=$db2_gap fieldLength=200. \
+ironWidth=1000 ironHeight=600 ironLength=600 \
+fringe=0 openAperture=1 ironColor=1,1,1 fieldColor=1,1,0 kill=1
+
+fieldmap db2_fringe1 file=db2_fringe1.BLFieldMap current=$db2_by*($scale)
+
+genericquad dq7 fieldLength=414.9117 apertureRadius=250.0 poleTipRadius=250. \
+gradient=$dq7_grad*($scale) ironLength=320 ironRadius=350 kill=1 \
+fringe=0.9458,4.796,-2.603,1.892,-0.1195,-0.1
+#fringe=0.9458,4.796,-2.603,1.892,-0.1195,-0.2273
+# The original fringe setting shows very strange Bx sturucture,
+# so the last parameter was modified.
+
+genericquad dq8 fieldLength=539.8251 apertureRadius=250.0 poleTipRadius=250 \
+gradient=$dq8_grad*($scale) ironLength=400 ironRadius=350 kill=1 \
+fringe=0.6581,4.918,-2.345,2.400,0.3797,-0.08942
+
+genericquad dq9 fieldLength=405.2703 apertureRadius=250.0 poleTipRadius=250 \
+gradient=$dq9_grad*($scale) ironLength=270 ironRadius=350 kill=1 \
+fringe=0.7085,5.193,-2.361,2.296,-1.436,0.9199
+
+genericbend sy1 By=$sy1_by*($scale) \
+fieldWidth=318 fieldHeight=198 fieldLength=180 \
+ironWidth=750 ironHeight=300 ironLength=180.0 \
+openAperture=1 ironColor=1,1,1 fieldColor=1,1,0
+
+genericbend kicker By=$kicker_by \
+fieldWidth=318 fieldHeight=198 fieldLength=400 \
+ironWidth=750 ironHeight=300 ironLength=400.0 \
+openAperture=1 ironColor=1,1,1 fieldColor=1,1,0
+
+genericbend sy2 By=$sy2_by*($scale) \
+fieldWidth=318 fieldHeight=198 fieldLength=180 \
+ironWidth=750 ironHeight=300 ironLength=180.0 \
+openAperture=1 ironColor=1,1,1 fieldColor=1,1,0
+
+genericbend ds3_1 By=$ds3_by*($scale) \
+fieldWidth=156 fieldHeight=200 fieldLength=84.20 \
+ironWidth=176 ironHeight=520 ironLength=84.20 \
+openAperture=1 ironColor=1,1,1 fieldColor=1,1,0
+
+param ds3_angle=40.
+param ds3_centerradius=954.
+idealsectorbend ds3_2 By=$ds3_by*($scale) angle=($ds3_angle) \
+fieldCenterRadius=($ds3_centerradius) \
+fieldInnerRadius=876. fieldOuterRadius=1032.0 fieldHeight=200 \
+ironInnerRadius=855. ironOuterRadius=1053.0 ironHeight=520 \
+ironColor=1,1,1 fieldColor=1,1,0
+
+genericbend ds3_3 By=$ds3_by*($scale) \
+fieldWidth=156 fieldHeight=200 fieldLength=167. \
+ironWidth=176 ironHeight=520 ironLength=167. \
+openAperture=1 ironColor=1,1,1 fieldColor=1,1,0
+
+
+param db3_gap=200.
+fieldmap db3_fringe0 file=db3_fringe0.BLFieldMap current=$db3_by*($scale)
+
+genericbend db3_1 By=0. \
+fieldWidth=300 fieldHeight=200 fieldLength=0 \
+ironWidth=300 ironHeight=500 ironLength=200.0 \
+openAperture=1 ironColor=1,1,1 fieldColor=1,1,0 kill=1
+
+idealsectorbend db3_2 By=$db3_by*($scale) angle=20 fieldCenterRadius=150.0 \
+fieldInnerRadius=0. fieldOuterRadius=300.0 fieldHeight=200 \
+ironInnerRadius=0. ironOuterRadius=450.0 ironHeight=500 \
+ironColor=1,1,1 fieldColor=1,1,0 kill=1
+
+genericbend db3_3 By=0. \
+fieldWidth=300 fieldHeight=200 fieldLength=0 \
+ironWidth=300 ironHeight=500 ironLength=200.0 \
+openAperture=1 ironColor=1,1,1 fieldColor=1,1,0 kill=1
+
+fieldmap db3_fringe1 file=db3_fringe1.BLFieldMap current=$db3_by*($scale)
+
+genericquad dq13 fieldLength=431.4463 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq13_grad*$dqd_scale*($scale) \
+ironLength=270 ironRadius=250 kill=1 \
+fringe=0.7078,5.249,-2.457,2.027,-0.8117,0.5792
+
+genericquad dq14 fieldLength=540.1758 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq14_grad*$dqd_scale*($scale) \
+ironLength=400 ironRadius=250 kill=1 \
+fringe=0.6607,4.911,-2.318,2.479,0.2345,-0.4319
+
+genericquad dq15 fieldLength=405.2702 apertureRadius=150.0 poleTipRadius=150 \
+gradient=$dq15_grad*$dqd_scale*($scale) \
+ironLength=270 ironRadius=250 kill=1 \
+fringe=0.7085,5.194,-2.361,2.295,-1.437,0.9220
+
+#
+# DSEP
+fieldexpr dsep_b factorB=$dsep_b factorE=0 \
+Bx=-1. By=0. Bz=0. \
+Ex=0. Ey=0. Ez=0. \
+length=450. width=200. height=150.
+
+fieldexpr dsep_e factorB=0 factorE=$dsep_e \
+Bx=0. By=0. Bz=0. \
+Ex=0. Ey=1. Ez=0. \
+length=555. width=200. height=150.
+
+box dsep_top height=15. length=555. width=200. material=Fe color=0,1,0
+box dsep_bot height=30. length=555. width=200. material=Al color=0,1,0
+tubs dsep_vessel innerRadius=290. outerRadius=330. length=730. \
+material=Fe color=0,1,1 kill=1
+
+#
+# Spectrometer DB4
+#
+param db4_gap=200.
+fieldmap db4_fringe0 file=db2_fringe0.BLFieldMap current=$db4_by*($scale)
+
+genericbend db4 By=$db4_by*($scale) \
+fieldWidth=600 fieldHeight=$db4_gap fieldLength=200. \
+ironWidth=1000 ironHeight=600 ironLength=600 \
+fringe=0 openAperture=1 ironColor=1,1,1 fieldColor=1,1,0 kill=1
+
+fieldmap db4_fringe1 file=db2_fringe1.BLFieldMap current=$db4_by*($scale)
+
+#
+#printfield type=cylinder exit=1 file=decayscfield.dat Z0=4998.35 \
+#nR=6 dR=10.0 nZ=600 dZ=10.0
+
+#
+#define the detector
+#
+virtualdetector det radius=300. color=0,1,0
+virtualdetector det_sc_entrance radius=60. color=0,1,0
+virtualdetector counter radius=50. color=0,1,0
+virtualdetector wc radius=400. color=0,1,0 material=kapton length=0.250
+virtualdetector hs1 radius=400. color=0,1,0 material=kapton length=1.0
+virtualdetector hs2 radius=1000. color=0,1,0 material=kapton length=10.0
+
+#
+# placements
+#
+place target_area2 z=-580.
+#place target z=0 y=$y_target rotation=Y60.0
+#place target_rim z=0 y=$y_target rotation=Y60.0
+#place stopper z=20.*cos(3.14159/180.*60.) y=0 \
+#      x=20.*sin(3.14159/180.*60.) rotation=Y60.0
+place target_area z=0
+place det z=200 rename=dettarget
+place shield z=580
+place det z=590 rename=detdq1
+place dq1 z=785
+place det z=975 rename=detdq2
+place dq2 z=1265
+place det z=1585 rename=detdq3
+place dq3 z=1830
+place shield1 z=2052.46
+place shield1_2 z=1830.+130.
+place det z=2455 rename=det1
+#
+param db1_position0=3358.5
+place db1_fringe0 z=$db1_position0+$db1_gap*0.62
+place db1_edgebox z=$db1_position0+$db1_gap*(0.5+0.62)
+param db1_position1=$db1_position0+$db1_gap*1.62
+place db1 z=$db1_position1 x=0 rotation=Z0 rotation=Y0
+cornerarc z=$db1_position1 angle=$db1_angle centerRadius=$db1_centerradius
+param db1_position2=$db1_position1+$db1_centerradius*abs($db1_angle)/180.*3.14159
+place db1_edgebox z=$db1_position2+$db1_gap*0.5
+place db1_fringe1 z=$db1_position2+$db1_gap
+#
+place det z=4080 rename=det2
+place shield2 z=4194.5
+place GVshield1 z=4307.0
+place GVshield2 z=4531.8
+place GVshield3 z=4754.3
+place det z=4997.0 rename=detsc
+place det_sc_entrance z=4998.0
+place foil1 z=5013.2
+place foil2 z=5013.3 rename=foil2_1
+place sc z=7998.35 x=0
+place sc_shield_2 z=5020.
+place sc_shield z=7998.35
+place det z=11113.03 rename=det3
+place foil2 z=11114. rename=foil2_2
+place shield3_1 z=11373.3
+place dq4 z=11758.3
+place dq5 z=12253.3
+place dq6 z=12723.3
+place shield3_2 z=12938.3
+place det z=13030.03 rename=det4
+#
+#
+param db2_sinangle=sin(3.14159/180.*$db2_angle/2.)
+param db2_cosangle=cos(3.14159/180.*$db2_angle/2.)
+param db2_z0=14558.44
+param db2_x0=-55.12
+place db2_fringe0 z=$db2_z0+(-300.)*($db2_cosangle)-($db2_x0)*($db2_sinangle) \
+      x=(-300.)*($db2_sinangle)+($db2_x0)*($db2_cosangle) \
+      rotation=Y+$db2_angle/2.
+place db2 z=$db2_z0-($db2_x0)*($db2_sinangle) \
+      x=($db2_x0)*($db2_cosangle) \
+      rotation=Y+$db2_angle/2.
+place db2_fringe1 z=$db2_z0+(300.)*($db2_cosangle)-($db2_x0)*($db2_sinangle) \
+      x=300.*($db2_sinangle)+($db2_x0)*($db2_cosangle) \
+      rotation=Y+$db2_angle/2.
+cornerarc z=$db2_z0-933.47*tan(3.14159/180.*abs($db2_angle)/2.) \
+      angle=$db2_angle centerRadius=933.47
+#
+#
+place dsep_b z=15633.4
+place dsep_e z=15633.4
+#place dsep_top z=15633.4 y=57.5
+#place dsep_bot z=15633.4 y=-65.0
+place dsep_top z=15633.4 y=107.5
+place dsep_bot z=15633.4 y=-115.0
+place dsep_vessel z=15633.4
+place det z=16100 rename=det5
+place dsl2 z=16508.4-30. x=250./2.+$dsl2_l_pos rename=dsl2_l
+place dsl2 z=16508.4-10. x=-250./2.-$dsl2_r_pos rename=dsl2_r
+place dsl2 z=16508.4+10. y=250./2.+$dsl2_t_pos rename=dsl2_t
+place dsl2 z=16508.4+30. y=-250./2.-$dsl2_b_pos rename=dsl2_b
+place shield4_1 z=16679.3
+place dq7 z=16968.3
+place dq8 z=17678.3
+place dq9 z=18363.3
+#place shield4_2 z=18951.3
+place shield4_2 z=17888.8
+#place det z=19000 rename=det6
+place det z=18649 rename=det6
+#
+#
+if $conf==0
+# Original configuration
+param db3_z0=20824.8
+place db3_fringe0 z=$db3_z0
+place db3_1 z=$db3_z0+100.
+place db3_2 z=$db3_z0+200.
+place db3_3 z=$db3_z0+200.+150.*sin(3.14159/180.*20.)+100.*cos(3.14159/180.*20.) \
+      x=150.*(1.-cos(3.14159/180.*20.))+100.*sin(3.14159/180.*20.) \
+      rotation=Y+20.
+place db3_fringe1 \
+      z=$db3_z0+200.+150.*sin(3.14159/180.*20.)+200.*cos(3.14159/180.*20.) \
+      x=150.*(1.-cos(3.14159/180.*20.))+200.*sin(3.14159/180.*20.) \
+      rotation=Y+20.
+cornerarc z=$db3_z0 angle=40 centerRadius=644.58
+#
+else
+# New configuration (switch yard + kicker + septum)
+param sy1_z0=18934.3
+place sy1 z=($sy1_z0)
+place kicker z=($sy1_z0+510.)
+place kicker z=($sy1_z0+1120.)
+place sy2 z=($sy1_z0+1630.)
+param ds3_z0=($sy1_z0+1630.+90.+195.+30.)
+
+param offset=100.
+place det z=($ds3_z0)-30. rename=det6b
+place OFFSET x=$offset
+place ds3_1 z=($ds3_z0)+42.10
+place ds3_2 z=($ds3_z0)+84.20
+cornerarc z=($ds3_z0+84.20) angle=$ds3_angle centerRadius=$ds3_centerradius+$offset
+param ds3_3_pos=$ds3_z0+84.20+($ds3_centerradius+$offset)*abs($ds3_angle)/180.*3.14159
+place ds3_3 z=($ds3_3_pos)+167./2.
+#
+endif
+#
+#
+place shield5 z=23130
+place det z=21900 rename=det7
+#1888.4+21146.7
+place dq13 z=22654.3
+place dq14 z=23339.3
+place dq15 z=24024.3
+place det z=24558.6 rename=det8
+#place counter z=24919.3 rename=b1
+
+place wc z=24920.0 rename=wc1
+place wc z=25220.0 rename=wc2
+#
+param db4_sinangle=sin(3.14159/180.*$db4_angle/2.)
+param db4_cosangle=cos(3.14159/180.*$db4_angle/2.)
+param db4_z0=25820.0
+param db4_x0=80.00
+place db4_fringe0 z=$db4_z0+(-300.)*($db4_cosangle)-($db4_x0)*($db4_sinangle) \
+      x=(-300.)*($db4_sinangle)+($db4_x0)*($db4_cosangle) \
+      rotation=Y+$db4_angle/2.
+place db4 z=$db4_z0-($db4_x0)*($db4_sinangle) \
+      x=($db4_x0)*($db4_cosangle) \
+      rotation=Y+$db4_angle/2.
+place db4_fringe1 z=$db4_z0+(300.)*($db4_cosangle)-($db4_x0)*($db4_sinangle) \
+      x=300.*($db4_sinangle)+($db4_x0)*($db4_cosangle) \
+      rotation=Y+$db4_angle/2.
+cornerarc z=$db4_z0-933.47*tan(3.14159/180.*abs($db4_angle)/2.) \
+      angle=$db4_angle centerRadius=933.47
+#
+place wc z=26420.0 rename=wc3
+place wc z=26720.0 rename=wc4
+place hs1 z=26820.0
+place hs2 z=28820.0
+
+
+
+
+#printfield type=print field=By layout=zx \
+#x=-300 y=0 z=19000 t=0 \
+#drow=10 dcol=100 nrow=300 ncol=7
+
+#probefield file=mlf_d2_09122502.probefield
+# y_offset=50. mm
+#probefield file=mlf_d2_09122501.probefield
+# y_offset=0. mm
+
