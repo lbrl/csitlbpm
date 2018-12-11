@@ -56,14 +56,40 @@ def main():
     print 'z0 = {}'.format( z0 )
     raw_input( '\nPress ENTER to continue, please.\n\n' )
 
+    palette = [ 
+                '75/255.,0/255.,130/255.,0.3',# indigo
+                '173/255.,255/255.,47/255.,0.3',# greenyellow
+                '199/255.,21/255.,133/255.,0.3',# mediumvioletred
+                '85/255.,107/255.,47/255.,0.3',# darkolivegreen
+                '255/255.,20/255.,147/255.,0.3',# deeppink
+                '30/255.,144/255.,255/255.,0.3',# dodgerblue
+                '147/255.,112/255.,219/255.,0.3',# mediumpurple
+                '152/255.,251/255.,152/255.,0.3',# palegreen
+                '221/255.,160/255.,211/255.,0.3',# plum
+                '64/255.,224/255.,208/255.,0.3'# turquoise
+                ]
+    '''
+                '240/255.,255/255.,240/255.,0.3',# honeydew
+                '245/255.,255/255.,250/255.,0.3',# mintcream
+                '240/255.,255/255.,255/255.,0.3']# azure
+                '240/255.,248/255.,255/255.,0.3',# aliceblue
+                '/255.,/255.,/255.,0.3',#
+                '/255.,/255.,/255.,0.3',#
+                '/255.,/255.,/255.,0.3',#
+                '/255.,/255.,/255.,0.3',#
+                '/255.,/255.,/255.,0.3',#
+    '''
+
     print '\n' + '\033[92m' + '*'*10 + '  PCDetectorConstruction.cc  ' + '*'*10 + '\033[0m'
     raw_input( '\nPress ENTER to continue, please.\n\n' )
-    for tub in tubs:
-        print """G4VSolid* {name}_solid = new G4Tubs("{name}", {rin}, {rout}, {length}, 0., 360.*degree);""".format(
+    for i, tub in enumerate(tubs):
+        print """G4VSolid* {name}_solid = new G4Tubs("{name}", {rin}*mm, {rout}*mm, 0.5*{length}*mm, 0., 360.*degree);""".format(
                 name = tub['name'], rin = tub['rin'], rout = tub['rout'], length=tub['length'] )
         print """{name}_logic = new G4LogicalVolume({name}_solid, {mat}, "{name}");""".format(
                 name = tub['name'], mat = tub['material'] )
-        print """new G4PVPlacement(xRot, G4ThreeVector(0,{zcentre},0), {name}_logic, "{name}", world_logic, false, 0, checkOverlaps);""".format(
+        print """{name}_logic->SetVisAttributes( G4VisAttributes(G4Colour({colour})) );""".format(
+                name = tub['name'], colour=palette[i % len(palette)] )
+        print """new G4PVPlacement(xRot, G4ThreeVector(0,{zcentre}*mm-zz00,0), {name}_logic, "{name}", world_logic, false, 0, checkOverlaps);""".format(
                 name = tub['name'], zcentre = tub['zcentre']-z0 )
         print
 
