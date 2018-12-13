@@ -40,6 +40,10 @@ def read_tubs():
             x['zcentre'] = float( lin[6] )
             x['zupstream'] = float( lin[7] )
             x['zdownstream'] = float( lin[8] )
+            if lin[10] == 'yes':
+                x['vacuum_inside'] = True
+            else:
+                x['vacuum_inside'] = False
             out.append( x )
         except ValueError:
             print 'ERROR'
@@ -91,12 +95,25 @@ def main():
                 name = tub['name'], colour=palette[i % len(palette)] )
         print """new G4PVPlacement(xRot, G4ThreeVector(0,{zcentre}*mm-zz00,0), {name}_logic, "{name}", world_logic, false, 0, checkOverlaps);""".format(
                 name = tub['name'], zcentre = tub['zcentre']-z0 )
+        if tub['vacuum_inside']:
+            vacname = tub['name'] + '_vacuum'
+            print """G4VSolid* {name}_solid = new G4Tubs("{name}", 0.*mm, {rout}*mm, 0.5*{length}*mm, 0., 360.*degree);""".format(
+                    name = vacname, rout = tub['rin'], length=tub['length'] )
+            print """{name}_logic = new G4LogicalVolume({name}_solid, {mat}, "{name}");""".format(
+                    name = vacname, mat = 'vacuum' )
+            print """{name}_logic->SetVisAttributes( G4VisAttributes(G4Colour({colour})) );""".format(
+                    name = vacname, colour='240/255.,255/255.,255/255.,0.3' )# azure
+            print """new G4PVPlacement(xRot, G4ThreeVector(0,{zcentre}*mm-zz00,0), {name}_logic, "{name}", world_logic, false, 0, checkOverlaps);""".format(
+                    name = vacname, zcentre = tub['zcentre']-z0 )
         print
 
     print '\n' + '\033[92m' + '*'*10 + '  PCDetectorConstruction.hh  ' + '*'*10 + '\033[0m'
     raw_input( '\nPress ENTER to continue, please.\n\n' )
     for tub in tubs:
         print """G4LogicalVolume* {name}_logic;""".format( name = tub['name'] )
+        if tub['vacuum_inside']:
+            vacname = tub['name'] + '_vacuum'
+            print """G4LogicalVolume* {name}_logic;""".format( name = vacname )
 
 
 if __name__ == '__main__':
